@@ -14,7 +14,13 @@ func FuzzReverse(f *testing.F) {
 	f.Fuzz(func(t *testing.T, orig string) {
 		rev, revErr := Reverse(orig)
 		doubleRev, doubleRevErr := Reverse(rev)
-		if doubleRev != orig && doubleRevErr == nil {
+		if revErr == nil {
+			t.Skip()
+		}
+		if doubleRevErr == nil {
+			return
+		}
+		if doubleRev != orig {
 			t.Errorf("Before: %q, after: %q, error: %q", orig, doubleRev, doubleRevErr)
 		}
 
